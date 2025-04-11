@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 450px; border-radius: 1rem;">
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4">Create an Account 📝</h3>
+
+      <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input name="username" class="form-control rounded-pill" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control rounded-pill" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Role</label>
+          <select name="role" class="form-select rounded-pill" required>
+            <option value="user" selected>User</option>
+          </select>
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary rounded-pill">Sign Up</button>
+        </div>
+        <div class="mb-3">
+          <label for="profile_pic" class="form-label">Profile Picture</label>
+          <input type="file" class="form-control" id="profile_pic" name="profile_pic">
+      </div>
+      </form>
+
+      <p class="text-center mt-3 mb-0">
+        Already have an account? <a href="/login">Log in</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

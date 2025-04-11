@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Create a New Quiz</h2>
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label class="form-label">Quiz Title</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" name="category" id="category" required>
+                <option value="">Select a category</option>
+                <option value="Education">Education</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Marketing">Marketing</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration (in minutes)</label>
+            <input type="number" name="duration" id="duration" class="form-control" min="1" required>
+        </div>
+
+        <!-- Hidden field to track question count -->
+        <input type="hidden" name="total_questions" value="3">
+
+        <hr>
+        <h4>Questions</h4>
+        {% for i in range(3) %}
+        <div class="card p-3 mb-4 shadow-sm">
+            <h5>Question {{ i + 1 }}</h5>
+
+            <!-- Question text -->
+            <input type="text" name="question_{{ i }}" class="form-control mb-2" placeholder="Enter your question" required>
+
+            <!-- Optional image upload -->
+            <label class="form-label">Upload Image (optional)</label>
+            <input type="file" name="image_{{ i }}" accept="image/*" class="form-control mb-3">
+
+            <!-- Options -->
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <input type="text" name="option_{{ i }}_1" class="form-control" placeholder="Option 1" required>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <input type="text" name="option_{{ i }}_2" class="form-control" placeholder="Option 2" required>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <input type="text" name="option_{{ i }}_3" class="form-control" placeholder="Option 3" required>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <input type="text" name="option_{{ i }}_4" class="form-control" placeholder="Option 4" required>
+                </div>
+            </div>
+
+            <!-- Correct answer -->
+            <label class="form-label mt-2">Correct Answer (Must match one option exactly)</label>
+            <input type="text" name="answer_{{ i }}" class="form-control" placeholder="Correct answer" required>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success">Create Quiz</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px; border-radius: 1rem;">
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4">Welcome Back 👋</h3>
+      
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input name="username" class="form-control rounded-pill" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control rounded-pill" required>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success rounded-pill">Login</button>
+        </div>
+      </form>
+
+      <p class="text-center mt-3 mb-0">
+        Don't have an account? <a href="/signup">Sign up here</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

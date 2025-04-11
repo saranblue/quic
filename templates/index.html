@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1 class="display-4">Welcome to QuizApp! 🎉</h1>
+    <p class="lead">Create, share, and take quizzes for fun, learning, or challenges.</p>
+    
+    <a href="/quizzes" class="btn btn-primary btn-lg mt-4">Explore All Quizzes</a>
+    <a href="/create-quiz" class="btn btn-outline-success btn-lg mt-4 ms-3">Create Your Own</a>
+</div>
+
+<!-- Recent Quizzes Section -->
+<div class="container mt-5">
+    <h3 class="mb-4">📝 Recent Quizzes</h3>
+    <div class="row">
+        {% for quiz in recent_quizzes %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ quiz.title }}</h5>
+                    <p class="card-text">{{ quiz.description[:100] }}...</p>
+                    <a href="{{ url_for('take_quiz', quiz_id=quiz._id) }}" class="btn btn-sm btn-primary">Take Quiz</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

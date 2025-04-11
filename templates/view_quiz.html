@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ quiz.title }}</title>
+</head>
+<body>
+    <h1>{{ quiz.title }}</h1>
+    <p>{{ quiz.description }}</p>
+
+    {% for q in quiz.questions %}
+    <div>
+        <h4>{{ loop.index }}. {{ q.question }}</h4>
+
+        {% if q.image %}
+            <img src="{{ url_for('static', filename=q.image) }}" alt="Question Image" style="max-width: 400px;" class="mb-2">
+        {% endif %}
+
+        <ul>
+            {% for opt in q.options %}
+            <li>{{ opt }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ quiz.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .question-image {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5 mb-5">
+    <h2 class="mb-1">{{ quiz.title }}</h2>
+    <p class="text-muted mb-3">{{ quiz.description }}</p>
+    <p><strong>Time Remaining:</strong> 
+        <span id="timer" class="badge bg-danger fs-5 px-3 py-2"></span>
+    </p>
+
+    <form method="POST" id="quiz-form">
+        <input type="hidden" name="time_left" id="time-left-input">
+
+        {% for q_idx in range(quiz.questions|length) %}
+            {% set q = quiz.questions[q_idx] %}
+            <div class="card p-4 mb-4 shadow-sm">
+                <h5 class="mb-3">{{ q_idx + 1 }}. {{ q.question }}</h5>
+
+                {% if q.image %}
+                <div class="text-center mb-3">
+                    <img src="{{ url_for('static', filename=q.image) }}" alt="Question Image" class="question-image img-fluid">
+                </div>
+                {% endif %}
+
+                {% for opt_idx in range(q.options|length) %}
+                    {% set opt = q.options[opt_idx] %}
+                    <div class="form-check mb-2">
+                        <input 
+                            class="form-check-input" 
+                            type="radio" 
+                            name="question_{{ q_idx }}" 
+                            id="q{{ q_idx }}_{{ opt_idx }}" 
+                            value="{{ opt }}"
+                            required
+                        >
+                        <label class="form-check-label" for="q{{ q_idx }}_{{ opt_idx }}">
+                            {{ opt }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success px-4 py-2">Submit Quiz</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById("quiz-form");
+    let timeLeft = {{ (quiz.duration | default(1, true)) * 60 }};
+
+    function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById("timer").innerText =
+            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert("⏰ Time is up! Auto-submitting your quiz...");
+            document.getElementById("time-left-input").value = timeLeft;
+            form.submit();
+        }
+
+        timeLeft--;
+    }
+
+    updateTimer();
+    const timerInterval = setInterval(updateTimer, 1000);
+    form.addEventListener("submit", () => {
+        document.getElementById("time-left-input").value = timeLeft;
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">📊 Your Quiz Results</h2>
+
+  {% set result_list = results | list %}
+  {% if result_list | length == 0 %}
+    <div class="alert alert-info">You haven't taken any quizzes yet.</div>
+  {% else %}
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Quiz ID</th>
+          <th>Score</th>
+          <th>Bonus</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in result_list %}
+        <tr>
+          <td>{{ r.quiz_id }}</td>
+          <td>{{ r.raw_score }} / {{ r.total }}</td>
+          <td>+{{ r.bonus }}</td>
+          <td>{{ r.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+  
+</div>
+{% endblock %}

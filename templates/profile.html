@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <img src="{{ url_for('static', filename='profile_pics/' ~ profile_pic) }}"
+             alt="Profile Picture" class="rounded-circle" width="150" height="150">
+        <h2 class="mt-2">{{ username }}'s Profile</h2>
+    </div>
+
+    {% if admin %}
+        <div class="alert alert-info text-center">
+            👑 <a href="/admin/quizzes" class="text-decoration-none">Admin: Manage Quizzes</a>
+        </div>
+    {% else %}
+        <div class="text-center mb-3">
+            <a href="/dashboard" class="btn btn-outline-primary">Back to Dashboard</a>
+        </div>
+    {% endif %}
+    
+
+    <h4>Your Quizzes</h4>
+    {% set quiz_list = quizzes|list %}
+    {% if quiz_list|length == 0 %}
+        <p>You haven’t created any quizzes yet.</p>
+    {% else %}
+    <ul class="list-group">
+      {% for quiz in quiz_list %}
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <a href="{{ url_for('view_quiz', quiz_id=quiz._id) }}" class="fw-bold">{{ quiz.title }}</a><br>
+            <small class="text-muted">Category: {{ quiz.category }}</small>
+          </div>
+        </div>
+    
+        <!-- 🔗 Share Link Section -->
+        <div class="input-group input-group-sm mt-2">
+          <input 
+            type="text" 
+            class="form-control" 
+            value="{{ request.url_root }}take-quiz/{{ quiz._id }}" 
+            id="quiz-link-{{ loop.index }}" 
+            readonly
+          >
+          <a href="{{ url_for('quiz_qr', quiz_id=quiz._id) }}" target="_blank" class="btn btn-sm btn-outline-dark">
+            📱 QR Code
+          </a>
+          <button
+            class="btn btn-outline-secondary" 
+            onclick="copyToClipboard('quiz-link-{{ loop.index }}')">
+            Copy Link
+          </button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    
+    {% endif %}
+</div>
+{% endblock %}
+<!-- 
+<ul class="list-group">
+  {% for quiz in quiz_list %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a href="{{ url_for('view_quiz', quiz_id=quiz._id) }}">{{ quiz.title }}</a>
+      <span class="badge bg-secondary">{{ quiz.category }}</span>
+  </li>
+  {% endfor %}
+</ul> -->

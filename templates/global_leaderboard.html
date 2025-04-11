@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+            <h2 class="mb-0">🌍 Global Leaderboard</h2>
+        </div>
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">🏅 Rank</th>
+                            <th scope="col">👤 User</th>
+                            <th scope="col">📊 Total Score</th>
+                            <th scope="col">🎯 Attempts</th>
+                            <th scope="col">⏰ Last Played</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in top_players %}
+                        <tr class="{% if loop.index == 1 %}table-warning{% elif loop.index == 2 %}table-secondary{% elif loop.index == 3 %}table-info{% endif %}">
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    {% if player.profile_pic %}
+                                        <img src="{{ url_for('static', filename='profile_pics/' ~ player.profile_pic) }}"
+                                             alt="Profile Picture"
+                                             class="rounded-circle"
+                                             style="width: 40px; height: 40px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center"
+                                             style="width: 40px; height: 40px; font-weight: bold;">
+                                            {{ player._id[0]|upper }}
+                                        </div>
+                                    {% endif %}
+                                    <strong>{{ player._id }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ player.total_score }}</td>
+                            <td>{{ player.attempts }}</td>
+                            <td>{{ player.last_played.strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

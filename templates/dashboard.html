@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+  .dashboard-title {
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .table thead {
+    background-color: #f8f9fa;
+  }
+</style>
+
+<div class="container py-5">
+  <div class="dashboard-title text-center text-primary">Welcome, {{ user.username }} 👋</div>
+
+  <!-- Profile Update -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-6 mx-auto">
+      <div class="glass-card p-4">
+        <h5 class="mb-3">👤 Edit Profile</h5>
+        <img src="{{ url_for('static', filename='profile_pics/' ~ profile_pic) }}"
+        alt="Profile Picture" class="rounded-circle" width="150" height="150">
+        <form method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input name="username" value="{{ user.username }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input name="password" type="password" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Change Profile Picture</label>
+            <input type="file" name="profile_pic" class="form-control">
+          </div>
+          
+          <button class="btn btn-warning w-100">Update Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Attempts -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-6">
+      <div class="glass-card p-4 h-100">
+        <h5 class="mb-3">🕒 Recent Attempts</h5>
+        <ul class="list-group list-group-flush">
+          {% for result in recent_results %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>Score: <strong>{{ result.score }}/{{ result.total }}</strong></span>
+            <span class="text-muted small">{{ result.timestamp.strftime('%b %d, %Y %H:%M') }}</span>
+          </li>
+          {% else %}
+          <li class="list-group-item">No recent attempts.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Quiz History -->
+    <div class="col-md-6">
+      <div class="glass-card p-4 h-100">
+        <h5 class="mb-3">📜 Quiz History</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Score</th>
+                <th>Total</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for result in history %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><span class="badge bg-success">{{ result.score }}</span></td>
+                <td>{{ result.total }}</td>
+                <td>{{ result.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<a href="/my-results" class="btn btn-outline-primary mt-3">📊 View My Results</a>
+
+
+{% endblock %}

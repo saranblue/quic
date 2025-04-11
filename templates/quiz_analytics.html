@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>📊 Analytics for "{{ quiz.title }}"</h2>
+
+  <p><strong>Total Attempts:</strong> {{ total_attempts }}</p>
+  <p><strong>Average Score:</strong> {{ average_score }} / {{ quiz.questions|length }}</p>
+
+  <h4 class="mt-4">📝 Recent Attempts</h4>
+  {% if recent_results|length > 0 %}
+    <ul class="list-group">
+      {% for result in recent_results %}
+        <li class="list-group-item">
+          <strong>User:</strong> {{ result.user }} |
+          <strong>Score:</strong> {{ result.score }}/{{ result.total }} |
+          <small class="text-muted">{{ result.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No attempts yet.</p>
+  {% endif %}
+{% endblock %}

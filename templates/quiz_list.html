@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>All Quizzes</h2>
+
+    <!-- Filter Buttons -->
+    <div class="mb-4">
+        <a href="/quizzes" class="btn btn-outline-secondary {% if not selected_category %}active{% endif %}">All</a>
+        <a href="/quizzes?category=Education" class="btn btn-outline-primary {% if selected_category == 'Education' %}active{% endif %}">Education</a>
+        <a href="/quizzes?category=Entertainment" class="btn btn-outline-success {% if selected_category == 'Entertainment' %}active{% endif %}">Entertainment</a>
+        <a href="/quizzes?category=Marketing" class="btn btn-outline-warning {% if selected_category == 'Marketing' %}active{% endif %}">Marketing</a>
+    </div>
+
+    <div class="row">
+        {% for quiz in quizzes %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ quiz.title }}</h5>
+                    <p class="card-text">{{ quiz.description[:100] }}...</p>
+                    <span class="badge bg-secondary">{{ quiz.category }}</span>
+                    <a href="{{ url_for('take_quiz', quiz_id=quiz._id) }}" class="btn btn-sm btn-primary mt-3">Take Quiz</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

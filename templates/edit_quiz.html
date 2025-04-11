@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Quiz</h2>
+
+<form method="POST">
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <input name="title" class="form-control" value="{{ quiz.title }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="description" class="form-control" required>{{ quiz.description }}</textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <select name="category" class="form-select" required>
+      <option value="Education" {% if quiz.category == 'Education' %}selected{% endif %}>Education</option>
+      <option value="Entertainment" {% if quiz.category == 'Entertainment' %}selected{% endif %}>Entertainment</option>
+      <option value="Marketing" {% if quiz.category == 'Marketing' %}selected{% endif %}>Marketing</option>
+    </select>
+  </div>
+
+  <input type="hidden" name="total_questions" value="{{ quiz.questions | length }}">
+
+  <hr>
+  <h4>Questions</h4>
+  {% for q in quiz.questions %}
+    <div class="mb-3">
+      <label>Question {{ loop.index }}</label>
+      <input name="question_{{ loop.index0 }}" class="form-control" value="{{ q.question }}" required>
+    </div>
+
+    {% for opt in range(4) %}
+    <div class="mb-2">
+      <input name="option_{{ loop.index0 }}_{{ opt + 1 }}" class="form-control"
+             value="{{ q.options[opt] if q.options|length > opt else '' }}" placeholder="Option {{ opt + 1 }}" required>
+    </div>
+    {% endfor %}
+
+    <div class="mb-3">
+      <label>Answer</label>
+      <input name="answer_{{ loop.index0 }}" class="form-control" value="{{ q.answer }}" required>
+    </div>
+    <hr>
+  {% endfor %}
+
+  <button class="btn btn-primary">Update Quiz</button>
+</form>
+{% endblock %}
